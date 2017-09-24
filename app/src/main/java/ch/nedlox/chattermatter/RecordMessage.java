@@ -161,7 +161,7 @@ public class RecordMessage extends AppCompatActivity {
                 int record = 0;
                 if (record == 0){
                     startRecording();
-                    record++;
+                    record = 1;
                 }else
                 {
                     stopRecording();
