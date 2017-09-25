@@ -117,34 +117,26 @@ public class ConfirmMessage extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                String encoded = Base64.encodeToString(bytes, 0);
+                final String encoded = Base64.encodeToString(bytes, 0);
 
-                /*new Thread(new Runnable() {
+                new Thread(new Runnable() {
                     @Override
                     public void run() {
                         OutputStream os = null;
-                        InputStream is = null;
+                      //  InputStream is = null;
                         HttpURLConnection conn = null;
                         try {
                             //constants
                             URL url = new URL("http://uek.nedlox.ch/writer.php");
                             JSONObject jsonObject = new JSONObject();
-                            jsonObject.put("rate", "1");
-                            jsonObject.put("comment", "OK");
-                            jsonObject.put("category", "pro");
-                            jsonObject.put("day", "19");
-                            jsonObject.put("month", "8");
-                            jsonObject.put("year", "2015");
-                            jsonObject.put("hour", "16");
-                            jsonObject.put("minute", "41");
-                            jsonObject.put("day_of_week", "3");
-                            jsonObject.put("week", "34");
-                            jsonObject.put("rate_number", "1");
+                            jsonObject.put("file", encoded);
+                            jsonObject.put("userFS", "1");
+                            jsonObject.put("location", "19");
                             String message = jsonObject.toString();
 
                             conn = (HttpURLConnection) url.openConnection();
-                            conn.setReadTimeout( 10000 *//*milliseconds*//* );
-                            conn.setConnectTimeout( 15000 *//* milliseconds *//* );
+                            conn.setReadTimeout( 10000 );
+                            conn.setConnectTimeout( 15000 ) ;
                             conn.setRequestMethod("POST");
                             conn.setDoInput(true);
                             conn.setDoOutput(true);
@@ -159,12 +151,12 @@ public class ConfirmMessage extends AppCompatActivity {
 
                             //setup send
                             os = new BufferedOutputStream(conn.getOutputStream());
-                            os.write(message.getBytes());
+                            os.write(message.getBytes("UTF8"));
                             //clean up
                             os.flush();
 
                             //do somehting with response
-                            is = conn.getInputStream();
+                           // is = conn.getInputStream();
                             //String contentAsString = readIt(is,len);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -174,7 +166,7 @@ public class ConfirmMessage extends AppCompatActivity {
                             //clean up
                             try {
                                 os.close();
-                                is.close();
+                               //is.close();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -182,7 +174,7 @@ public class ConfirmMessage extends AppCompatActivity {
                             conn.disconnect();
                         }
                     }
-                }).start();*/
+                }).start();
                 /*byte[] decoded = Base64.decode(encoded, 0);
 
                 try
