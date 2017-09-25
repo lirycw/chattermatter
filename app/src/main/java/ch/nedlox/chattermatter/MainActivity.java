@@ -1,12 +1,16 @@
 package ch.nedlox.chattermatter;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,10 +36,15 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
     ListView MessageList;
     String url = "http://uek.nedlox.ch/reader.php";
+    String imei;
     ProgressDialog dialog;
+
+    SharedPreferences prefs = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        prefs = getSharedPreferences("ch.nedlox.chattermatter", MODE_PRIVATE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
 
@@ -69,8 +78,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
+    public void getImei(){
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        String imei = telephonyManager.getDeviceId();
+    }
+    /* Checks if external storage is available for read and write */
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
     void parseJsonData(String jsonString) {
         try {
             JSONArray arr = new JSONArray(jsonString);
