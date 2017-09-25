@@ -34,6 +34,7 @@ public class ConfirmMessage extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        seekBar = (SeekBar) findViewById(R.id.seekBar);
         setContentView(R.layout.confirm_message);
 
         play_bttn = (FloatingActionButton) findViewById(R.id.play_bttn);
@@ -41,9 +42,7 @@ public class ConfirmMessage extends AppCompatActivity {
 
         play_bttn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) throws IllegalArgumentException,
-                    SecurityException, IllegalStateException {
-
+            public void onClick(View view) {
 
                 mediaPlayer = new MediaPlayer();
                 try {
@@ -52,7 +51,7 @@ public class ConfirmMessage extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                final int duration = mediaPlayer.getDuration();
+              /*  final int duration = mediaPlayer.getDuration();
                 final int amountToupdate = duration / 100;
                 Timer mTimer = new Timer();
                 mTimer.schedule(new TimerTask() {
@@ -71,7 +70,7 @@ public class ConfirmMessage extends AppCompatActivity {
                             }
                         });
                     };
-                }, amountToupdate);
+                }, amountToupdate);*/
 
                 mediaPlayer.start();
                 Toast.makeText(ConfirmMessage.this, "Recording Playing",
@@ -96,24 +95,24 @@ public class ConfirmMessage extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         });
-        button5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                URL url = null;
-                try {
-                    url = new URL("http://uek.nedlox.ch/writer.php?");
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-                HttpURLConnection urlConnection = null;
-                try {
-                    urlConnection = (HttpURLConnection) url.openConnection();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                urlConnection.disconnect();
-            }
-        });
+       // button5.setOnClickListener(new View.OnClickListener() {
+       //     @Override
+       //     public void onClick(View view) {
+       //         URL url = null;
+       //         try {
+       //             url = new URL("http://uek.nedlox.ch/writer.php?");
+       //         } catch (MalformedURLException e) {
+       //             e.printStackTrace();
+       //         }
+       //         HttpURLConnection urlConnection = null;
+       //         try {
+       //             urlConnection = (HttpURLConnection) url.openConnection();
+       //         } catch (IOException e) {
+       //             e.printStackTrace();
+       //         }
+       //         urlConnection.disconnect();
+       //     }
+        //});
     }
 
 }
