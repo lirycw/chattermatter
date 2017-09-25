@@ -34,38 +34,15 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     ListView MessageList;
-    TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
     String url = "http://uek.nedlox.ch/reader.php";
-    String imei = telephonyManager.getDeviceId();
-    String url_firstrun = "http://uek.nedlox.ch/firstrun.php?imei=" + imei;
+    String imei;
     ProgressDialog dialog;
 
     SharedPreferences prefs = null;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
 
-        if (prefs.getBoolean("firstrun", true)) {
-
-            StringRequest request = new StringRequest(url_firstrun, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String string) {
-                    ;
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
-                    Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                }
-            });
-            prefs.edit().putBoolean("firstrun", false).commit();
-        }
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         prefs = getSharedPreferences("ch.nedlox.chattermatter", MODE_PRIVATE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
@@ -100,7 +77,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
+    public void getImei(){
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        String imei = telephonyManager.getDeviceId();
+    }
     /* Checks if external storage is available for read and write */
     public boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
