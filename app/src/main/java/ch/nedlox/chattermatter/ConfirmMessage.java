@@ -6,17 +6,27 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import org.apache.commons.io.FileUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import static android.R.drawable.ic_media_pause;
 import static android.R.drawable.ic_media_play;
@@ -40,6 +50,7 @@ public class ConfirmMessage extends AppCompatActivity {
 
         play_bttn = (FloatingActionButton) findViewById(R.id.play_bttn);
         button6 = (Button) findViewById(R.id.button6);
+        button5 = (Button) findViewById(R.id.button5);
 
         play_bttn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,24 +105,101 @@ public class ConfirmMessage extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         });
-       // button5.setOnClickListener(new View.OnClickListener() {
-       //     @Override
-       //     public void onClick(View view) {
-       //         URL url = null;
-       //         try {
-       //             url = new URL("http://uek.nedlox.ch/writer.php?");
-       //         } catch (MalformedURLException e) {
-       //             e.printStackTrace();
-       //         }
-       //         HttpURLConnection urlConnection = null;
-       //         try {
-       //             urlConnection = (HttpURLConnection) url.openConnection();
-       //         } catch (IOException e) {
-       //             e.printStackTrace();
-       //         }
-       //         urlConnection.disconnect();
-       //     }
-        //});
+        button5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               File audioFile = new File(RecordMessage.AudioSavePathInDevice);
+
+                byte[] bytes = new byte[0];
+                try {
+                    bytes = FileUtils.readFileToByteArray(audioFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                String encoded = Base64.encodeToString(bytes, 0);
+
+                /*new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        OutputStream os = null;
+                        InputStream is = null;
+                        HttpURLConnection conn = null;
+                        try {
+                            //constants
+                            URL url = new URL("http://uek.nedlox.ch/writer.php");
+                            JSONObject jsonObject = new JSONObject();
+                            jsonObject.put("rate", "1");
+                            jsonObject.put("comment", "OK");
+                            jsonObject.put("category", "pro");
+                            jsonObject.put("day", "19");
+                            jsonObject.put("month", "8");
+                            jsonObject.put("year", "2015");
+                            jsonObject.put("hour", "16");
+                            jsonObject.put("minute", "41");
+                            jsonObject.put("day_of_week", "3");
+                            jsonObject.put("week", "34");
+                            jsonObject.put("rate_number", "1");
+                            String message = jsonObject.toString();
+
+                            conn = (HttpURLConnection) url.openConnection();
+                            conn.setReadTimeout( 10000 *//*milliseconds*//* );
+                            conn.setConnectTimeout( 15000 *//* milliseconds *//* );
+                            conn.setRequestMethod("POST");
+                            conn.setDoInput(true);
+                            conn.setDoOutput(true);
+                            conn.setFixedLengthStreamingMode(message.getBytes().length);
+
+                            //make some HTTP header nicety
+                            conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
+                            conn.setRequestProperty("X-Requested-With", "XMLHttpRequest");
+
+                            //open
+                            conn.connect();
+
+                            //setup send
+                            os = new BufferedOutputStream(conn.getOutputStream());
+                            os.write(message.getBytes());
+                            //clean up
+                            os.flush();
+
+                            //do somehting with response
+                            is = conn.getInputStream();
+                            //String contentAsString = readIt(is,len);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } finally {
+                            //clean up
+                            try {
+                                os.close();
+                                is.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            conn.disconnect();
+                        }
+                    }
+                }).start();*/
+                /*byte[] decoded = Base64.decode(encoded, 0);
+
+                try
+                {
+                    File file2 = new File("fileName.wav");
+                    FileOutputStream os = new FileOutputStream(file2, true);
+                    os.write(decoded);
+                    os.close();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }*/
+                Intent launchactivity=new Intent (ConfirmMessage.this,MainActivity.class);
+                startActivity(launchactivity);
+            }
+       });
     }
 
 }

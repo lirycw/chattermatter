@@ -143,10 +143,7 @@ public class RecordMessage extends AppCompatActivity {
                     if (StoragePermission && RecordPermission) {
                         Toast.makeText(RecordMessage.this, "Permission Granted",
                                 Toast.LENGTH_LONG).show();
-                    } //else {
-                      //  Toast.makeText(RecordMessage.this,"Permission
-                      //          Denied",Toast.LENGTH_LONG).show();
-                   // }
+                    }
                 }
                 break;
         }
