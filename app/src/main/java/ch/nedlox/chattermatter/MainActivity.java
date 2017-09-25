@@ -22,6 +22,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -73,13 +74,25 @@ public class MainActivity extends AppCompatActivity {
     void parseJsonData(String jsonString) {
         try {
             JSONArray arr = new JSONArray(jsonString);
-            ArrayList al = new ArrayList();
+            ArrayList<Post> al = new ArrayList<>();
             for(int i = 0; i < arr.length(); i++){
-                String post = arr.getJSONObject(i).getString("file");
-                al.add(post);
+                String location = arr.getJSONObject(i).getString("location");
+                String voice = arr.getJSONObject(i).getString("file");
+                // TODO make date with data
+//                Date date = new Date(arr.getJSONObject(i).getString("date"));
+                Date date = new Date(2017, 9, 25);
+                int userId = Integer.parseInt(arr.getJSONObject(i).getString("userFS"));
+                int postId = Integer.parseInt(arr.getJSONObject(i).getString("ID"));
+                al.add(new Post(location, voice, date, userId, postId));
             }
 
-            ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, al);
+            ArrayList<String> temp = new ArrayList<>();
+
+            for(int i=0;i<al.toArray().length;i++){
+                temp.add(al.get(i).getVoice());
+            }
+
+            ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, temp);
             MessageList.setAdapter(adapter);
         } catch (JSONException e) {
             e.printStackTrace();

@@ -18,7 +18,8 @@ tools:layout_editor_absoluteX="0dp">
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="16dp" />
+        tools:layout_editor_absoluteY="16dp"
+        />
 
 
     <android.support.design.widget.FloatingActionButton
