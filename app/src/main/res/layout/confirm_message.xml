@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bestätigen"
+        tools:layout_editor_absoluteX="64dp"
+        tools:layout_editor_absoluteY="431dp" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Abbrechen"
+        tools:layout_editor_absoluteX="217dp"
+        tools:layout_editor_absoluteY="431dp" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="203dp"
+        android:layout_height="22dp"
+        tools:layout_editor_absoluteY="274dp"
+        tools:layout_editor_absoluteX="91dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="201dp"
+        android:layout_height="37dp"
+        android:text="Hör es dir nochmal an!"
+        tools:layout_editor_absoluteX="92dp"
+        tools:layout_editor_absoluteY="92dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/play_bttn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_media_play"
+        tools:layout_editor_absoluteX="152dp"
+        tools:layout_editor_absoluteY="185dp" />
+
+</android.support.constraint.ConstraintLayout>
