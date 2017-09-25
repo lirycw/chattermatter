@@ -3,6 +3,7 @@ package ch.nedlox.chattermatter;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -51,28 +52,26 @@ public class ConfirmMessage extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-              /*  final int duration = mediaPlayer.getDuration();
-                final int amountToupdate = duration / 100;
-                Timer mTimer = new Timer();
-                mTimer.schedule(new TimerTask() {
-
+                final Handler handler = new Handler();
+                Runnable runnable = new Runnable()
+                {
                     @Override
-                    public void run() {
-                        runOnUiThread(new Runnable() {
+                    public void run()
+                    {
+                        int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
+                        int duration = mediaPlayer.getDuration() / 1000;
+                        int progress = (currentPosition * 100) / duration;
 
-                            @Override
-                            public void run() {
-                                if (!(amountToupdate * seekBar.getProgress() >= duration)) {
-                                    int p = seekBar.getProgress();
-                                    p += 1;
-                                    seekBar.setProgress(p);
-                                }
-                            }
-                        });
-                    };
-                }, amountToupdate);*/
+                        SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
+                        seekBar.setProgress(progress);
 
+                        handler.postDelayed(this, 1000);
+                    }
+                };
                 mediaPlayer.start();
+
+                handler.postDelayed(runnable, 1000);
+
                 Toast.makeText(ConfirmMessage.this, "Recording Playing",
                         Toast.LENGTH_LONG).show();
                 play_bttn.setImageResource(ic_media_pause);
