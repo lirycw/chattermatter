@@ -4,19 +4,24 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
+import android.util.Base64;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -25,9 +30,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,12 +47,15 @@ public class MainActivity extends AppCompatActivity {
     String url = "http://uek.nedlox.ch/reader.php";
     String imei;
     ProgressDialog dialog;
+    String RandomAudioFileName = "ABCDEFGHIJKLMNOP";
+    Random random ;
 
     SharedPreferences prefs = null;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        random = new Random();
         prefs = getSharedPreferences("ch.nedlox.chattermatter", MODE_PRIVATE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
@@ -77,6 +89,67 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(launchactivity);
             }
         });
+        MessageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            MediaPlayer mediaPlayer ;
+            String AudioSavePathInDevice = null;
+            public void onItemClick(AdapterView<?> adapter, View v, int position,
+                                    long arg3)
+            {
+                String value = (String)adapter.getItemAtPosition(position);
+               byte[] decoded = Base64.decode(value, 0);
+
+                try
+                {
+                    AudioSavePathInDevice =
+                            Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
+                                    CreateRandomAudioFileName(5) + "AudioRecording.3gp";
+                    File file2 = new File(AudioSavePathInDevice);
+                    FileOutputStream os = new FileOutputStream(file2, true);
+                    os.write(decoded);
+                    os.close();
+                    mediaPlayer = new MediaPlayer();
+                    try {
+                        mediaPlayer.setDataSource(AudioSavePathInDevice);
+                        mediaPlayer.prepare();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    final Handler handler = new Handler();
+                    Runnable runnable = new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
+                            int duration = mediaPlayer.getDuration() / 1000;
+                            int progress = (currentPosition * 100) / duration;
+
+                            SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
+                            seekBar.setProgress(progress);
+
+                            handler.postDelayed(this, 1000);
+                        }
+                    };
+                    mediaPlayer.start();
+
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+    public String CreateRandomAudioFileName(int string){
+        StringBuilder stringBuilder = new StringBuilder( string );
+        int i = 0 ;
+        while(i < string ) {
+            stringBuilder.append(RandomAudioFileName.
+                    charAt(random.nextInt(RandomAudioFileName.length())));
+
+            i++ ;
+        }
+        return stringBuilder.toString();
     }
     public void getImei(){
         TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
