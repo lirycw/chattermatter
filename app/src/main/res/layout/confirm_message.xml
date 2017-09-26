@@ -38,9 +38,11 @@
         android:layout_width="201dp"
         android:layout_height="37dp"
         android:text="Hör es dir nochmal an!"
-        android:textSize="18dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:layout_above="@+id/textView3"
+        android:layout_alignStart="@+id/textView3"
+        android:layout_marginBottom="16dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/play_bttn"
@@ -51,5 +53,16 @@
         app:srcCompat="@android:drawable/ic_media_play"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="201dp"
+        android:layout_height="37dp"
+        android:text="nochmal an!"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:layout_marginBottom="29dp"
+        android:layout_above="@+id/seekBar"
+        android:layout_alignEnd="@+id/seekBar" />
 
 </RelativeLayout>

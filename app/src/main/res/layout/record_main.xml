@@ -13,20 +13,30 @@
         android:id="@+id/record_bttn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="27dp"
         android:clickable="true"
-        app:elevation="1dp"
+        app:elevation="2dp"
         app:fabSize="normal"
         app:srcCompat="@android:drawable/ic_btn_speak_now"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="27dp" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/record_bttn"
+        android:layout_marginTop="211dp"
+        android:text="Sag etwas!"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="209dp"
-        android:text="Sag etwas!" />
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:text="Klicke um Aufnahme zu starten"
+        android:layout_above="@+id/record_bttn"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
