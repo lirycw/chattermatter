@@ -4,6 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.text.DateFormat;
+import java.text.SimpleDateFormat;
+import android.icu.util.TimeZone;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
@@ -34,6 +37,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -189,9 +193,7 @@ public class MainActivity extends AppCompatActivity {
             for(int i = 0; i < arr.length(); i++){
                 String location = arr.getJSONObject(i).getString("location");
                 String voice = arr.getJSONObject(i).getString("file");
-                // TODO make date with data
-//                Date date = new Date(arr.getJSONObject(i).getString("date"));
-                Date date = new Date(2017, 9, 25);
+                String date = arr.getJSONObject(i).getString("date");
                 int userId = Integer.parseInt(arr.getJSONObject(i).getString("userFS"));
                 int postId = Integer.parseInt(arr.getJSONObject(i).getString("ID"));
                 al.add(new Post(location, voice, date, userId, postId));

@@ -3,11 +3,10 @@ import java.util.Date;
 
 public class Post {
 
-    private String location, voice;
-    private Date date;
+    private String location, voice, date;
     private int userId, postId;
 
-    public Post(String location, String voice, Date date, int userId, int postId){
+    public Post(String location, String voice, String date, int userId, int postId){
         this.location = location;
         this.date = date;
         this.userId = userId;
@@ -22,7 +21,7 @@ public class Post {
     public String getVoice(){
         return this.voice;
     }
-    public Date getDate(){
+    public String getDate(){
         return this.date;
     }
     public int getUserId(){
