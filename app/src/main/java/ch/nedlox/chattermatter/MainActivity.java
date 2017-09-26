@@ -3,27 +3,17 @@ package ch.nedlox.chattermatter;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.icu.text.DateFormat;
-import java.text.SimpleDateFormat;
-import android.icu.util.TimeZone;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.telephony.TelephonyManager;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Toast;
@@ -36,14 +26,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-import static android.R.drawable.ic_media_play;
 
 public class MainActivity extends AppCompatActivity {
   ArrayList<Post> al;
@@ -163,9 +149,8 @@ public class MainActivity extends AppCompatActivity {
       for (int i = 0; i < arr.length(); i++) {
         String location = arr.getJSONObject(i).getString("location");
         String voice = arr.getJSONObject(i).getString("file");
-        // TODO make date with data
-        // Date date = new Date(arr.getJSONObject(i).getString("date"));
-        Date date = new Date(2017, 9, 25);
+
+        String date = arr.getJSONObject(i).getString("date");
         int userId = Integer.parseInt(arr.getJSONObject(i).getString("userFS"));
         int postId = Integer.parseInt(arr.getJSONObject(i).getString("ID"));
         al.add(new Post(location, voice, date, userId, postId));
