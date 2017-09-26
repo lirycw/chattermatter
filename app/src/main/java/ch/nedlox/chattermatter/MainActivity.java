@@ -1,9 +1,11 @@
 package ch.nedlox.chattermatter;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.text.DateFormat;
+import java.text.SimpleDateFormat;
+import android.icu.util.TimeZone;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,24 +27,23 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Toast;
-
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import static android.R.drawable.ic_media_play;
 
 public class MainActivity extends AppCompatActivity {
   ArrayList<Post> al;
@@ -77,24 +78,22 @@ public class MainActivity extends AppCompatActivity {
       }
     });
 
-    // TODO refresh shit
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.start_record_bttn);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent launchactivity=new Intent (MainActivity.this,RecordMessage.class);
+                startActivity(launchactivity);
+            }
+        });
+        MessageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            MediaPlayer mediaPlayer;
+            String AudioSavePathInDevice = null;
 
-    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.start_record_bttn);
-    fab.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        Intent launchactivity = new Intent(MainActivity.this, RecordMessage.class);
-        startActivity(launchactivity);
-      }
-    });
-    MessageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-      MediaPlayer mediaPlayer;
-      String AudioSavePathInDevice = null;
-
-      public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3) {
-        String value = (String) adapter.getItemAtPosition(position);
-        String voice = al.get(position).getVoice();
-        byte[] decoded = Base64.decode(voice, 0);
+            public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3) {
+                String value = (String)adapter.getItemAtPosition(position);
+                String voice = al.get(position).getVoice();
+               byte[] decoded = Base64.decode(voice, 0);
 
         try {
           AudioSavePathInDevice =
