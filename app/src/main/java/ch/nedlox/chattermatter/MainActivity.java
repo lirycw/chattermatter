@@ -96,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
                                     long arg3)
             {
                 String value = (String)adapter.getItemAtPosition(position);
-               byte[] decoded = Base64.decode(value, 0);
+                String voice = al.get(position).getVoice();
+               byte[] decoded = Base64.decode(voice, 0);
 
                 try
                 {
@@ -163,10 +164,10 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
+    ArrayList<Post> al = new ArrayList<>();
     void parseJsonData(String jsonString) {
         try {
             JSONArray arr = new JSONArray(jsonString);
-            ArrayList<Post> al = new ArrayList<>();
             for(int i = 0; i < arr.length(); i++){
                 String location = arr.getJSONObject(i).getString("location");
                 String voice = arr.getJSONObject(i).getString("file");
@@ -181,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<String> temp = new ArrayList<>();
 
             for(int i=0;i<al.toArray().length;i++){
-                temp.add(al.get(i).getVoice());
+                temp.add(al.get(i).getDate().toString());
             }
 
             ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, temp);
