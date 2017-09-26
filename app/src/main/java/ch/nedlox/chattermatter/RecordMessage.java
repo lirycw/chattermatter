@@ -93,11 +93,17 @@ public class RecordMessage extends AppCompatActivity {
                 } else {
                     record_bttn_counter[0] = 0;
                     mediaRecorder.stop();
-                    Toast.makeText(RecordMessage.this, "Recording Completed",
-                            Toast.LENGTH_LONG).show();
-
-                    Intent launchactivity=new Intent (RecordMessage.this,ConfirmMessage.class);
-                    startActivity(launchactivity);
+                    if (AudioSavePathInDevice == null) {
+                        Toast.makeText(RecordMessage.this, "Nachricht wurde nicht aufgenommen",
+                                Toast.LENGTH_LONG).show();
+                        Intent launchactivity = new Intent(RecordMessage.this, RecordMessage.class);
+                        startActivity(launchactivity);
+                    } else {
+                        Toast.makeText(RecordMessage.this, "Recording Completed",
+                                Toast.LENGTH_LONG).show();
+                        Intent launchactivity = new Intent(RecordMessage.this, ConfirmMessage.class);
+                        startActivity(launchactivity);
+                    }
                 }
             }
         });

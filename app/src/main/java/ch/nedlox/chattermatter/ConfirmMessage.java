@@ -71,10 +71,12 @@ public class ConfirmMessage extends AppCompatActivity {
                     {
                         int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
                         int duration = mediaPlayer.getDuration() / 1000;
-                        int progress = (currentPosition * 100) / duration;
-
-                        SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
-                        seekBar.setProgress(progress);
+                        if (duration < 1){
+                            duration = 1;
+                        }
+                            int progress = (currentPosition * 100) / duration;
+                            SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
+                            seekBar.setProgress(progress);
 
                         handler.postDelayed(this, 1000);
                     }
