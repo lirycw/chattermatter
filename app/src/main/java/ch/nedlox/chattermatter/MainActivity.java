@@ -42,6 +42,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static android.R.drawable.ic_media_play;
+
 public class MainActivity extends AppCompatActivity {
     ListView MessageList;
     String url = "http://uek.nedlox.ch/reader.php";
@@ -136,6 +138,13 @@ public class MainActivity extends AppCompatActivity {
                             }
                         };
                         mediaPlayer.start();
+                        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+                            @Override
+                            public void onCompletion(MediaPlayer mp) {
+                                playcounter = 0;
+                            }
+                        });
 
                     }
                     catch (Exception e)

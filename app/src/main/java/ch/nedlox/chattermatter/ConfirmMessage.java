@@ -177,19 +177,6 @@ public class ConfirmMessage extends AppCompatActivity {
                         }
                     }
                 }).start();
-                /*byte[] decoded = Base64.decode(encoded, 0);
-
-                try
-                {
-                    File file2 = new File("fileName.wav");
-                    FileOutputStream os = new FileOutputStream(file2, true);
-                    os.write(decoded);
-                    os.close();
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }*/
                 Intent launchactivity=new Intent (ConfirmMessage.this,MainActivity.class);
                 startActivity(launchactivity);
             }
