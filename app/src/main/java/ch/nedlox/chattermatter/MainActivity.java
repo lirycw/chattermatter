@@ -31,6 +31,8 @@ import java.util.Random;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import static android.R.drawable.ic_media_play;
+
 public class MainActivity extends AppCompatActivity {
   ArrayList<Post> al;
   ListView MessageList;
@@ -75,48 +77,47 @@ public class MainActivity extends AppCompatActivity {
         MessageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             MediaPlayer mediaPlayer;
             String AudioSavePathInDevice = null;
-
+            int playcounter = 0;
             public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3) {
+              if (playcounter == 0){
+                playcounter = 1;
                 String value = (String)adapter.getItemAtPosition(position);
                 String voice = al.get(position).getVoice();
-               byte[] decoded = Base64.decode(voice, 0);
+                byte[] decoded = Base64.decode(voice, 0);
+                try {
+                  AudioSavePathInDevice =
+                          Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
+                                  CreateRandomAudioFileName(5) + "AudioRecording.3gp";
+                  File file2 = new File(AudioSavePathInDevice);
+                  FileOutputStream os = new FileOutputStream(file2, true);
+                  os.write(decoded);
+                  os.close();
+                  mediaPlayer = new MediaPlayer();
+                  try {
+                    mediaPlayer.setDataSource(AudioSavePathInDevice);
+                    mediaPlayer.prepare();
+                  } catch (IOException e) {
+                    e.printStackTrace();
+                  }
+                  mediaPlayer.start();
+                  mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
-        try {
-          AudioSavePathInDevice =
-              Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
-                  CreateRandomAudioFileName(5) + "AudioRecording.3gp";
-          File file2 = new File(AudioSavePathInDevice);
-          FileOutputStream os = new FileOutputStream(file2, true);
-          os.write(decoded);
-          os.close();
-          mediaPlayer = new MediaPlayer();
-          try {
-            mediaPlayer.setDataSource(AudioSavePathInDevice);
-            mediaPlayer.prepare();
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-          final Handler handler = new Handler();
-          Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-              int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
-              int duration = mediaPlayer.getDuration() / 1000;
-              int progress = (currentPosition * 100) / duration;
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                      playcounter = 0;
+                    }
+                  });
 
-              SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
-              seekBar.setProgress(progress);
+                } catch (Exception e) {
+                  e.printStackTrace();
+                }
+              }else {
+                mediaPlayer.stop();
+                playcounter = 0;
+              }
 
-              handler.postDelayed(this, 1000);
             }
-          };
-          mediaPlayer.start();
-
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    });
+        });
   }
 
   public String CreateRandomAudioFileName(int string) {
