@@ -51,50 +51,55 @@ public class ConfirmMessage extends AppCompatActivity {
         play_bttn = (FloatingActionButton) findViewById(R.id.play_bttn);
         button6 = (Button) findViewById(R.id.button6);
         button5 = (Button) findViewById(R.id.button5);
-
         play_bttn.setOnClickListener(new View.OnClickListener() {
-            @Override
+            int playcounter = 0 ;
             public void onClick(View view) {
 
-                mediaPlayer = new MediaPlayer();
-                try {
-                    mediaPlayer.setDataSource(RecordMessage.AudioSavePathInDevice);
-                    mediaPlayer.prepare();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                final Handler handler = new Handler();
-                Runnable runnable = new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
-                        int duration = mediaPlayer.getDuration() / 1000;
-                        if (duration < 1){
-                            duration = 1;
-                        }
+                if (playcounter == 0) {
+                    playcounter = 1;
+                    mediaPlayer = new MediaPlayer();
+                    try {
+                        mediaPlayer.setDataSource(RecordMessage.AudioSavePathInDevice);
+                        mediaPlayer.prepare();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    final Handler handler = new Handler();
+                    Runnable runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
+                            int duration = mediaPlayer.getDuration() / 1000;
+                            if (duration < 1) {
+                                duration = 1;
+                            }
                             int progress = (currentPosition * 100) / duration;
                             SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
                             seekBar.setProgress(progress);
 
-                        handler.postDelayed(this, 1000);
-                    }
-                };
-                mediaPlayer.start();
+                            handler.postDelayed(this, 1000);
+                        }
+                    };
+                    mediaPlayer.start();
 
-                handler.postDelayed(runnable, 1000);
+                    handler.postDelayed(runnable, 1000);
 
-                Toast.makeText(ConfirmMessage.this, "Recording Playing",
-                        Toast.LENGTH_LONG).show();
-                play_bttn.setImageResource(ic_media_pause);
-                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    Toast.makeText(ConfirmMessage.this, "Recording Playing",
+                            Toast.LENGTH_LONG).show();
+                    play_bttn.setImageResource(ic_media_pause);
+                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-                        play_bttn.setImageResource(ic_media_play);
-                    }
-                });
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            play_bttn.setImageResource(ic_media_play);
+                            playcounter = 0;
+                        }
+                    });
+                }else {
+                    mediaPlayer.pause();
+                    play_bttn.setImageResource(ic_media_play);
+                    playcounter = 0;
+                }
 
             }
         });
