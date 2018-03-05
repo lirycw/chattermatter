@@ -3,11 +3,14 @@ package ch.nedlox.chattermatter;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -31,6 +34,8 @@ import java.util.Random;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import static android.Manifest.permission.RECORD_AUDIO;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.R.drawable.ic_media_play;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,10 +48,15 @@ public class MainActivity extends AppCompatActivity {
   StringRequest request;
   SwipeRefreshLayout refresh;
   SharedPreferences prefs = null;
+  public static final int RequestPermissionCode = 1;
 
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+      //Check if Permission is given
+      if (!checkPermission()){
+          requestPermission();
+      }
     random = new Random();
     prefs = getSharedPreferences("ch.nedlox.chattermatter", MODE_PRIVATE);
     super.onCreate(savedInstanceState);
@@ -119,7 +129,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
   }
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(MainActivity.this, new
+                String[]{WRITE_EXTERNAL_STORAGE, RECORD_AUDIO}, RequestPermissionCode);
+    }
+    public boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(getApplicationContext(),
+                WRITE_EXTERNAL_STORAGE);
+        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(),
+                RECORD_AUDIO);
+        return result == PackageManager.PERMISSION_GRANTED &&
+                result1 == PackageManager.PERMISSION_GRANTED;
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case RequestPermissionCode:
+                if (grantResults.length> 0) {
+                    boolean StoragePermission = grantResults[0] ==
+                            PackageManager.PERMISSION_GRANTED;
+                    boolean RecordPermission = grantResults[1] ==
+                            PackageManager.PERMISSION_GRANTED;
 
+                    if (StoragePermission && RecordPermission) {
+                        Toast.makeText(MainActivity.this, "Permission Granted",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+        }
+    }
   public String CreateRandomAudioFileName(int string) {
     StringBuilder stringBuilder = new StringBuilder(string);
     int i = 0;
