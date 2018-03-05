@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                   AudioSavePathInDevice =
                           Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
                                   CreateRandomAudioFileName(5) + "AudioRecording.3gp";
-                  File file2 = new File(AudioSavePathInDevice);
+                  final File file2 = new File(AudioSavePathInDevice);
                   FileOutputStream os = new FileOutputStream(file2, true);
                   os.write(decoded);
                   os.close();
@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
                       playcounter = 0;
+                      file2.delete();
                     }
                   });
 
@@ -124,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
               }else {
                 mediaPlayer.stop();
                 playcounter = 0;
+
               }
 
             }
