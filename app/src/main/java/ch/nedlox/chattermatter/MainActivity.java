@@ -266,56 +266,9 @@ public class MainActivity extends AppCompatActivity {
                 ViewHolder viewHolder = new ViewHolder();
                 viewHolder.thumbnail = (ImageView) convertView.findViewById(R.id.list_item_thumbnail);
                 viewHolder.title = (TextView) convertView.findViewById(R.id.list_item_text);
-                viewHolder.button = (Button) convertView.findViewById(R.id.list_item_btn);
                 convertView.setTag(viewHolder);
             }
             mainViewholder = (ViewHolder) convertView.getTag();
-            mainViewholder.button.setOnClickListener(new View.OnClickListener() {
-                MediaPlayer mediaPlayer;
-                String AudioSavePathInDevice = null;
-                int playcounter = 0;
-                public void onClick(View v) {
-                    if (playcounter == 0){
-                        playcounter = 1;
-                        String value;
-                        String voice = al.get(position).getVoice();
-                        byte[] decoded = Base64.decode(voice, 0);
-                        try {
-                            AudioSavePathInDevice =
-                                    Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
-                                            CreateRandomAudioFileName(5) + "AudioRecording.3gp";
-                            final File file2 = new File(AudioSavePathInDevice);
-                            FileOutputStream os = new FileOutputStream(file2, true);
-                            os.write(decoded);
-                            os.close();
-                            mediaPlayer = new MediaPlayer();
-                            try {
-                                mediaPlayer.setDataSource(AudioSavePathInDevice);
-                                mediaPlayer.prepare();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            mediaPlayer.start();
-                            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    playcounter = 0;
-                                    file2.delete();
-                                }
-                            });
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }else {
-                        mediaPlayer.stop();
-                        playcounter = 0;
-
-                    }
-                    Toast.makeText(getContext(), "Button was clicked for list item " + position, Toast.LENGTH_SHORT).show();
-                }
-            });
             mainViewholder.title.setText(getItem(position));
 
             return convertView;
